@@ -28,10 +28,7 @@ function login() {
     ).then(
         data => {
             console.log(data);
-            console.log(data.funds)
             fundsElement = document.getElementById("funds");
-            console.log(fundsElement);
-            console.log(fundsElement.textContent);
             fundsElement.textContent = data.funds.toString();
         }
     )
