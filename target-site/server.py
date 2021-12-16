@@ -20,13 +20,9 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        #"*"
+        # Restrict origin to this web server
         "http://localhost:8000",
         "localhost:8000"
-        #'*'
-        #"http://localhost:8000"
-        # "http://localhost:3000",
-        # "localhost:3000"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -37,8 +33,6 @@ app.add_middleware(
 sessions = {}
 # Add attacker as an initial user
 funds = {'attacker': 1000}
-
-# TODO: Break
 
 api = FastAPI(root_path="/api")
 
@@ -66,31 +60,18 @@ async def login(username: str, response: Response):
     #sessions[username] = token
     sessions[token] = username
     # Example funds
-    funds[username] = 1000
+    if username not in funds: funds[username] = 1000
     #return {"detail": "Success"}
     print('Sessions:', sessions)
 
     return {"funds": funds[username]}
-
-# def check_token(username, token):
-#     return username in sessions and sessions[username] == token
-
-
-# class TransferRequest(BaseModel):
-#     to_user: str
-#     amount: int
 
 @api.post("/transfer")
 async def transfer_funds(to_user: str = Body(...), amount: int = Body(...), sessioncookie: str = Cookie(None)):#, sessioncookie: str = Cookie(None)):#transferRequest: TransferRequest, sessioncookie: str = Cookie(None)):#to_user: str = Body(...), amount: int = Body(...)):#, sessioncookie: str = Cookie(None)):
     '''
     All parameters passed in JSON body to demonstrate the exploit.
     '''
-    #sessioncookie = ""
-    #to_user = TransferRequest
-    #from_user 
     # https://fastapi.tiangolo.com/tutorial/cookie-params/
-    # if not check_token(from_user, sessioncookie):
-    #     raise HTTPException("Invalid Session Cookie!")
     print('Session Cookie:', sessioncookie)
     assert sessioncookie in sessions
     from_user = sessions[sessioncookie]
@@ -110,10 +91,8 @@ async def transfer_funds(to_user: str = Body(...), amount: int = Body(...), sess
 @api.post("/test")
 async def test(request: Request):
     print(request)
-    #print(request)
     body = await request.body()
     print('Body:', body)
-
     print('Cookies passed:', request.cookies)
 
 if __name__ == '__main__':

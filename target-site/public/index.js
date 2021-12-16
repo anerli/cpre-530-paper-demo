@@ -4,13 +4,11 @@ console.log("This is the target site");
 function login() {
     console.log("Logging In");
 
-    //fetch("http://localhost:8000/login")
-
     let usernameInput = document.getElementById("usernameInput");
     let username = usernameInput.value;
 
     console.log("Provided username:", username);
-    usernameInput.value = "";
+    //usernameInput.value = "";
 
     fetch(
         "http://localhost:8000/api/login/" + username,
