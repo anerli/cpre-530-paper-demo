@@ -20,9 +20,9 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "*"
-        # "http://localhost:8000",
-        # "localhost:8000"
+        #"*"
+        "http://localhost:8000",
+        "localhost:8000"
         #'*'
         #"http://localhost:8000"
         # "http://localhost:3000",
@@ -35,7 +35,8 @@ app.add_middleware(
 
 
 sessions = {}
-funds = {}
+# Add attacker as an initial user
+funds = {'attacker': 1000}
 
 # TODO: Break
 

