@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Cookie, Response, Body, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+#from pydantic import BaseModel
+import uvicorn
 import secrets
 
 from starlette.requests import Request
@@ -19,6 +21,10 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "*"
+        # "http://localhost:8000",
+        # "localhost:8000"
+        #'*'
+        #"http://localhost:8000"
         # "http://localhost:3000",
         # "localhost:3000"
     ],
@@ -69,16 +75,22 @@ async def login(username: str, response: Response):
 #     return username in sessions and sessions[username] == token
 
 
+# class TransferRequest(BaseModel):
+#     to_user: str
+#     amount: int
 
 @api.post("/transfer")
-async def transfer_funds(to_user: str = Body(...), amount: int = Body(...), sessioncookie: str = Cookie(None)):
+async def transfer_funds(to_user: str = Body(...), amount: int = Body(...), sessioncookie: str = Cookie(None)):#, sessioncookie: str = Cookie(None)):#transferRequest: TransferRequest, sessioncookie: str = Cookie(None)):#to_user: str = Body(...), amount: int = Body(...)):#, sessioncookie: str = Cookie(None)):
     '''
     All parameters passed in JSON body to demonstrate the exploit.
     '''
+    #sessioncookie = ""
+    #to_user = TransferRequest
     #from_user 
     # https://fastapi.tiangolo.com/tutorial/cookie-params/
     # if not check_token(from_user, sessioncookie):
     #     raise HTTPException("Invalid Session Cookie!")
+    print('Session Cookie:', sessioncookie)
     assert sessioncookie in sessions
     from_user = sessions[sessioncookie]
 
@@ -97,5 +109,11 @@ async def transfer_funds(to_user: str = Body(...), amount: int = Body(...), sess
 @api.post("/test")
 async def test(request: Request):
     print(request)
-    
+    #print(request)
+    body = await request.body()
+    print('Body:', body)
 
+    print('Cookies passed:', request.cookies)
+
+if __name__ == '__main__':
+    uvicorn.run(__name__+':app', host="localhost", port=8000, reload=True)
